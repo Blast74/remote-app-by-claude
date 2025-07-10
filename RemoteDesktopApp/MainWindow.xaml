@@ -1,0 +1,95 @@
+<Window x:Class="RemoteDesktopApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:RemoteDesktopApp.Views"
+        Title="Professional Remote Desktop" 
+        Height="800" 
+        Width="1200"
+        MinHeight="600"
+        MinWidth="800"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Icon="Assets/app.ico">
+    
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.LightBlue.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        
+        <!-- HeaderBar -->
+        <local:HeaderBar Grid.Row="0" />
+        
+        <!-- Main Content Area -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- SidePanel -->
+            <local:SidePanel Grid.Column="0" />
+            
+            <!-- Splitter -->
+            <GridSplitter 
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="{DynamicResource MaterialDesignDivider}"
+                ShowsPreview="True"/>
+            
+            <!-- TabContainer -->
+            <local:TabContainer Grid.Column="2" />
+        </Grid>
+        
+        <!-- StatusBar -->
+        <local:StatusBar Grid.Row="2" />
+        
+        <!-- Settings Panel Overlay -->
+        <local:SettingsPanel 
+            x:Name="SettingsPanel" 
+            Grid.Row="0" 
+            Grid.RowSpan="3"
+            Visibility="Collapsed"
+            Panel.ZIndex="1000" />
+            
+        <!-- Loading Overlay -->
+        <Grid x:Name="LoadingOverlay"
+              Grid.Row="0"
+              Grid.RowSpan="3"
+              Background="{DynamicResource MaterialDesignPaper}"
+              Opacity="0.9"
+              Visibility="Collapsed"
+              Panel.ZIndex="999">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressBar 
+                    Style="{StaticResource MaterialDesignCircularProgressBar}"
+                    Width="50"
+                    Height="50"
+                    IsIndeterminate="True" />
+                <TextBlock 
+                    Text="Loading..."
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Center"
+                    Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
