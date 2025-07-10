@@ -1,0 +1,377 @@
+<UserControl x:Class="RemoteDesktopApp.Views.SettingsPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Width="400"
+             Background="{DynamicResource MaterialDesignPaper}">
+    
+    <UserControl.Resources>
+        <Storyboard x:Key="SlideInAnimation">
+            <DoubleAnimation 
+                Storyboard.TargetProperty="RenderTransform.X"
+                From="400" 
+                To="0" 
+                Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="SlideOutAnimation">
+            <DoubleAnimation 
+                Storyboard.TargetProperty="RenderTransform.X"
+                From="0" 
+                To="400" 
+                Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+    
+    <UserControl.RenderTransform>
+        <TranslateTransform X="400"/>
+    </UserControl.RenderTransform>
+    
+    <Grid>
+        <!-- Backdrop -->
+        <Rectangle 
+            Fill="Black" 
+            Opacity="0.5" 
+            MouseLeftButtonDown="Backdrop_MouseLeftButtonDown"/>
+        
+        <!-- Settings Panel -->
+        <Border 
+            Background="{DynamicResource MaterialDesignPaper}"
+            BorderBrush="{DynamicResource MaterialDesignDivider}"
+            BorderThickness="1,0,0,0"
+            HorizontalAlignment="Right"
+            Width="400"
+            materialDesign:ShadowAssist.ShadowDepth="Depth3">
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Header -->
+                <Border Grid.Row="0" 
+                       Background="{DynamicResource MaterialDesignChipBackground}"
+                       Padding="20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock 
+                            Grid.Column="0"
+                            Text="Settings" 
+                            Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
+                        
+                        <Button 
+                            Grid.Column="1"
+                            Style="{StaticResource MaterialDesignIconButton}"
+                            Command="{Binding CloseSettingsCommand}">
+                            <materialDesign:PackIcon Kind="Close" Width="20" Height="20"/>
+                        </Button>
+                    </Grid>
+                </Border>
+                
+                <!-- Settings Content -->
+                <ScrollViewer Grid.Row="1" 
+                             VerticalScrollBarVisibility="Auto"
+                             Padding="20">
+                    <StackPanel>
+                        
+                        <!-- General Settings -->
+                        <materialDesign:Card 
+                            materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                            Margin="0,0,0,20">
+                            <Expander 
+                                Header="General" 
+                                IsExpanded="True"
+                                Style="{StaticResource MaterialDesignExpander}">
+                                <StackPanel Margin="20">
+                                    
+                                    <!-- Theme Selection -->
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock 
+                                            Grid.Column="0"
+                                            Text="Theme" 
+                                            Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                            VerticalAlignment="Center"/>
+                                        
+                                        <ComboBox 
+                                            Grid.Column="1"
+                                            Width="120"
+                                            SelectedItem="{Binding SelectedTheme, Mode=TwoWay}"
+                                            ItemsSource="{Binding AvailableThemes}"
+                                            Style="{StaticResource MaterialDesignComboBox}"/>
+                                    </Grid>
+                                    
+                                    <!-- Language Selection -->
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock 
+                                            Grid.Column="0"
+                                            Text="Language" 
+                                            Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                            VerticalAlignment="Center"/>
+                                        
+                                        <ComboBox 
+                                            Grid.Column="1"
+                                            Width="120"
+                                            SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
+                                            ItemsSource="{Binding AvailableLanguages}"
+                                            Style="{StaticResource MaterialDesignComboBox}"/>
+                                    </Grid>
+                                    
+                                    <!-- Auto Save -->
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock 
+                                            Grid.Column="0"
+                                            Text="Auto Save Settings" 
+                                            Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                            VerticalAlignment="Center"/>
+                                        
+                                        <ToggleButton 
+                                            Grid.Column="1"
+                                            IsChecked="{Binding AutoSaveEnabled, Mode=TwoWay}"
+                                            Style="{StaticResource MaterialDesignSwitchToggleButton}"/>
+                                    </Grid>
+                                    
+                                </StackPanel>
+                            </Expander>
+                        </materialDesign:Card>
+                        
+                        <!-- Connection Settings -->
+                        <materialDesign:Card 
+                            materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                            Margin="0,0,0,20">
+                            <Expander 
+                                Header="Connection" 
+                                IsExpanded="False"
+                                Style="{StaticResource MaterialDesignExpander}">
+                                <StackPanel Margin="20">
+                                    
+                                    <!-- Max Concurrent Sessions -->
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock 
+                                            Grid.Column="0"
+                                            Text="Max Concurrent Sessions" 
+                                            Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                            VerticalAlignment="Center"/>
+                                        
+                                        <TextBox 
+                                            Grid.Column="1"
+                                            Width="60"
+                                            Text="{Binding MaxConcurrentSessions, Mode=TwoWay}"
+                                            Style="{StaticResource MaterialDesignTextBox}"/>
+                                    </Grid>
+                                    
+                                    <!-- Auto Reconnect -->
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock 
+                                            Grid.Column="0"
+                                            Text="Auto Reconnect" 
+                                            Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                            VerticalAlignment="Center"/>
+                                        
+                                        <ToggleButton 
+                                            Grid.Column="1"
+                                            IsChecked="{Binding AutoReconnectEnabled, Mode=TwoWay}"
+                                            Style="{StaticResource MaterialDesignSwitchToggleButton}"/>
+                                    </Grid>
+                                    
+                                    <!-- Connection Timeout -->
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock 
+                                            Grid.Column="0"
+                                            Text="Connection Timeout (seconds)" 
+                                            Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                            VerticalAlignment="Center"/>
+                                        
+                                        <TextBox 
+                                            Grid.Column="1"
+                                            Width="60"
+                                            Text="{Binding ConnectionTimeout, Mode=TwoWay}"
+                                            Style="{StaticResource MaterialDesignTextBox}"/>
+                                    </Grid>
+                                    
+                                </StackPanel>
+                            </Expander>
+                        </materialDesign:Card>
+                        
+                        <!-- Security Settings -->
+                        <materialDesign:Card 
+                            materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                            Margin="0,0,0,20">
+                            <Expander 
+                                Header="Security" 
+                                IsExpanded="False"
+                                Style="{StaticResource MaterialDesignExpander}">
+                                <StackPanel Margin="20">
+                                    
+                                    <!-- Two Factor Authentication -->
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock 
+                                            Grid.Column="0"
+                                            Text="Two Factor Authentication" 
+                                            Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                            VerticalAlignment="Center"/>
+                                        
+                                        <ToggleButton 
+                                            Grid.Column="1"
+                                            IsChecked="{Binding TwoFactorEnabled, Mode=TwoWay}"
+                                            Style="{StaticResource MaterialDesignSwitchToggleButton}"/>
+                                    </Grid>
+                                    
+                                    <!-- Encryption Level -->
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock 
+                                            Grid.Column="0"
+                                            Text="Encryption Level" 
+                                            Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                            VerticalAlignment="Center"/>
+                                        
+                                        <ComboBox 
+                                            Grid.Column="1"
+                                            Width="120"
+                                            SelectedItem="{Binding EncryptionLevel, Mode=TwoWay}"
+                                            ItemsSource="{Binding AvailableEncryptionLevels}"
+                                            Style="{StaticResource MaterialDesignComboBox}"/>
+                                    </Grid>
+                                    
+                                </StackPanel>
+                            </Expander>
+                        </materialDesign:Card>
+                        
+                        <!-- Performance Settings -->
+                        <materialDesign:Card 
+                            materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                            Margin="0,0,0,20">
+                            <Expander 
+                                Header="Performance" 
+                                IsExpanded="False"
+                                Style="{StaticResource MaterialDesignExpander}">
+                                <StackPanel Margin="20">
+                                    
+                                    <!-- Performance Monitoring -->
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock 
+                                            Grid.Column="0"
+                                            Text="Performance Monitoring" 
+                                            Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                            VerticalAlignment="Center"/>
+                                        
+                                        <ToggleButton 
+                                            Grid.Column="1"
+                                            IsChecked="{Binding PerformanceMonitoringEnabled, Mode=TwoWay}"
+                                            Style="{StaticResource MaterialDesignSwitchToggleButton}"/>
+                                    </Grid>
+                                    
+                                    <!-- Logging Level -->
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock 
+                                            Grid.Column="0"
+                                            Text="Logging Level" 
+                                            Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                            VerticalAlignment="Center"/>
+                                        
+                                        <ComboBox 
+                                            Grid.Column="1"
+                                            Width="120"
+                                            SelectedItem="{Binding LoggingLevel, Mode=TwoWay}"
+                                            ItemsSource="{Binding AvailableLoggingLevels}"
+                                            Style="{StaticResource MaterialDesignComboBox}"/>
+                                    </Grid>
+                                    
+                                </StackPanel>
+                            </Expander>
+                        </materialDesign:Card>
+                        
+                    </StackPanel>
+                </ScrollViewer>
+                
+                <!-- Action Buttons -->
+                <Border Grid.Row="2" 
+                       Background="{DynamicResource MaterialDesignChipBackground}"
+                       Padding="20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Button 
+                            Grid.Column="1"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            Content="Reset to Defaults"
+                            Margin="0,0,10,0"
+                            Command="{Binding ResetToDefaultsCommand}"/>
+                        
+                        <Button 
+                            Grid.Column="2"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Content="Save Settings"
+                            Command="{Binding SaveSettingsCommand}"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
