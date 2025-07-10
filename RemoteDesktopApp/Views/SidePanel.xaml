@@ -1,0 +1,248 @@
+<UserControl x:Class="RemoteDesktopApp.Views.SidePanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Width="300"
+             Background="{DynamicResource MaterialDesignPaper}">
+    
+    <Border BorderBrush="{DynamicResource MaterialDesignDivider}" 
+            BorderThickness="0,0,1,0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Quick Actions -->
+            <StackPanel Grid.Row="0" Margin="10">
+                <TextBlock 
+                    Text="Quick Actions" 
+                    Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+                    Margin="0,0,0,10"/>
+                    
+                <Button 
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="4"
+                    Margin="0,0,0,5"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding NewConnectionCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Plus" Width="16" Height="16" Margin="0,0,5,0"/>
+                        <TextBlock Text="New Connection"/>
+                    </StackPanel>
+                </Button>
+                
+                <Button 
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="4"
+                    Margin="0,0,0,5"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding ImportConnectionsCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Import" Width="16" Height="16" Margin="0,0,5,0"/>
+                        <TextBlock Text="Import Connections"/>
+                    </StackPanel>
+                </Button>
+                
+                <Button 
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="4"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding RemoteAppsCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Apps" Width="16" Height="16" Margin="0,0,5,0"/>
+                        <TextBlock Text="Remote Apps"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            
+            <!-- Connections List -->
+            <ScrollViewer Grid.Row="1" 
+                         VerticalScrollBarVisibility="Auto"
+                         HorizontalScrollBarVisibility="Disabled"
+                         Margin="10,0,10,10">
+                <StackPanel>
+                    
+                    <!-- Favorites Section -->
+                    <Expander 
+                        Header="Favorites" 
+                        IsExpanded="True"
+                        Style="{StaticResource MaterialDesignExpander}"
+                        Margin="0,0,0,10">
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Star" Width="16" Height="16" Margin="0,0,5,0"/>
+                                    <TextBlock Text="{Binding}" Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        
+                        <ItemsControl ItemsSource="{Binding FavoriteConnections}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button 
+                                        Style="{StaticResource MaterialDesignFlatButton}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Left"
+                                        Margin="0,2"
+                                        Padding="10,8"
+                                        Command="{Binding DataContext.ConnectCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <materialDesign:PackIcon 
+                                                Grid.Column="0"
+                                                Kind="Monitor" 
+                                                Width="16" 
+                                                Height="16" 
+                                                Margin="0,0,10,0"/>
+                                            
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock 
+                                                    Text="{Binding Name}" 
+                                                    Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                                    FontWeight="Medium"/>
+                                                <TextBlock 
+                                                    Text="{Binding ServerAddress}" 
+                                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                                    Opacity="0.7"/>
+                                            </StackPanel>
+                                            
+                                            <Button 
+                                                Grid.Column="2"
+                                                Style="{StaticResource MaterialDesignIconButton}"
+                                                Width="24" 
+                                                Height="24"
+                                                Padding="0"
+                                                Command="{Binding DataContext.EditConnectionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}">
+                                                <materialDesign:PackIcon Kind="DotsVertical" Width="16" Height="16"/>
+                                            </Button>
+                                        </Grid>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Expander>
+                    
+                    <!-- Recent Connections Section -->
+                    <Expander 
+                        Header="Recent Connections" 
+                        IsExpanded="True"
+                        Style="{StaticResource MaterialDesignExpander}">
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="History" Width="16" Height="16" Margin="0,0,5,0"/>
+                                    <TextBlock Text="{Binding}" Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        
+                        <ItemsControl ItemsSource="{Binding RecentConnections}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button 
+                                        Style="{StaticResource MaterialDesignFlatButton}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Left"
+                                        Margin="0,2"
+                                        Padding="10,8"
+                                        Command="{Binding DataContext.ConnectCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <materialDesign:PackIcon 
+                                                Grid.Column="0"
+                                                Kind="Monitor" 
+                                                Width="16" 
+                                                Height="16" 
+                                                Margin="0,0,10,0"/>
+                                            
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock 
+                                                    Text="{Binding Name}" 
+                                                    Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                                    FontWeight="Medium"/>
+                                                <TextBlock 
+                                                    Text="{Binding ServerAddress}" 
+                                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                                    Opacity="0.7"/>
+                                                <TextBlock 
+                                                    Text="{Binding LastConnectedAt, StringFormat=Last: \{0:MM/dd/yyyy HH:mm\}}" 
+                                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                                    Opacity="0.5"/>
+                                            </StackPanel>
+                                            
+                                            <Button 
+                                                Grid.Column="2"
+                                                Style="{StaticResource MaterialDesignIconButton}"
+                                                Width="24" 
+                                                Height="24"
+                                                Padding="0"
+                                                Command="{Binding DataContext.EditConnectionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}">
+                                                <materialDesign:PackIcon Kind="DotsVertical" Width="16" Height="16"/>
+                                            </Button>
+                                        </Grid>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+            
+            <!-- Connection Status -->
+            <Border Grid.Row="2" 
+                   Background="{DynamicResource MaterialDesignChipBackground}"
+                   Padding="10"
+                   Margin="10,0,10,10"
+                   CornerRadius="4">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock 
+                        Grid.Row="0"
+                        Text="Connection Status" 
+                        Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                        Margin="0,0,0,5"/>
+                    
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Ellipse 
+                            Grid.Column="0"
+                            Width="8" 
+                            Height="8" 
+                            Fill="{DynamicResource MaterialDesignValidationErrorBrush}"
+                            Margin="0,0,5,0"/>
+                        
+                        <TextBlock 
+                            Grid.Column="1"
+                            Text="{Binding ActiveSessionsCount, StringFormat=\{0\} active sessions}" 
+                            Style="{StaticResource MaterialDesignBody2TextBlock}"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>
