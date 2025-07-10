@@ -1,0 +1,185 @@
+<UserControl x:Class="RemoteDesktopApp.Views.TabContainer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Background="{DynamicResource MaterialDesignPaper}">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Tab Header -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource MaterialDesignChipBackground}"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                BorderThickness="0,0,0,1">
+            <TabControl 
+                x:Name="SessionTabControl"
+                Style="{StaticResource MaterialDesignTabControl}"
+                materialDesign:ColorZoneAssist.Mode="PrimaryMid"
+                ItemsSource="{Binding ActiveSessions}"
+                SelectedItem="{Binding SelectedSession, Mode=TwoWay}"
+                TabStripPlacement="Top">
+                
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="10,5">
+                            <materialDesign:PackIcon 
+                                Kind="{Binding StatusIcon}" 
+                                Width="16" 
+                                Height="16" 
+                                Margin="0,0,5,0"
+                                Foreground="{Binding StatusColor}"/>
+                            <TextBlock 
+                                Text="{Binding DisplayName}" 
+                                Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                MaxWidth="150"
+                                TextTrimming="CharacterEllipsis"/>
+                            <Button 
+                                Style="{StaticResource MaterialDesignIconButton}"
+                                Width="20" 
+                                Height="20"
+                                Padding="0"
+                                Margin="10,0,0,0"
+                                Command="{Binding DataContext.CloseSessionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                CommandParameter="{Binding}">
+                                <materialDesign:PackIcon Kind="Close" Width="12" Height="12"/>
+                            </Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <!-- RDP Session Content -->
+                            <Border 
+                                Background="{DynamicResource MaterialDesignPaper}"
+                                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                BorderThickness="1"
+                                Margin="5">
+                                
+                                <!-- RDP Control Container -->
+                                <Grid x:Name="RdpContainer">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <!-- Session Toolbar -->
+                                    <Border Grid.Row="0" 
+                                           Background="{DynamicResource MaterialDesignChipBackground}"
+                                           Padding="10,5">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                                <TextBlock 
+                                                    Text="{Binding ServerAddress}" 
+                                                    Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                                    Margin="0,0,20,0"/>
+                                                <TextBlock 
+                                                    Text="{Binding Username}" 
+                                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                                    Opacity="0.7"/>
+                                            </StackPanel>
+                                            
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                <Button 
+                                                    Style="{StaticResource MaterialDesignIconButton}"
+                                                    ToolTip="Full Screen"
+                                                    Command="{Binding ToggleFullScreenCommand}">
+                                                    <materialDesign:PackIcon Kind="Fullscreen" Width="16" Height="16"/>
+                                                </Button>
+                                                <Button 
+                                                    Style="{StaticResource MaterialDesignIconButton}"
+                                                    ToolTip="Disconnect"
+                                                    Command="{Binding DisconnectCommand}">
+                                                    <materialDesign:PackIcon Kind="Disconnect" Width="16" Height="16"/>
+                                                </Button>
+                                                <Button 
+                                                    Style="{StaticResource MaterialDesignIconButton}"
+                                                    ToolTip="Settings"
+                                                    Command="{Binding ShowSessionSettingsCommand}">
+                                                    <materialDesign:PackIcon Kind="Settings" Width="16" Height="16"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                    
+                                    <!-- RDP Session Display -->
+                                    <Grid Grid.Row="1" ClipToBounds="True">
+                                        <ContentPresenter Content="{Binding RdpControl}" />
+                                        
+                                        <!-- Connection Status Overlay -->
+                                        <Grid x:Name="ConnectionStatusOverlay"
+                                              Background="{DynamicResource MaterialDesignPaper}"
+                                              Opacity="0.95"
+                                              Visibility="{Binding IsConnecting, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <ProgressBar 
+                                                    Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                                    Width="50"
+                                                    Height="50"
+                                                    IsIndeterminate="True"
+                                                    Margin="0,0,0,20" />
+                                                <TextBlock 
+                                                    Text="{Binding ConnectionStatus}"
+                                                    Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,0,0,10"/>
+                                                <TextBlock 
+                                                    Text="{Binding ConnectionDetails}"
+                                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                                    HorizontalAlignment="Center"
+                                                    Opacity="0.7"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+        </Border>
+        
+        <!-- Welcome Screen (No Sessions) -->
+        <Grid Grid.Row="1" 
+              Visibility="{Binding HasNoSessions, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <materialDesign:PackIcon 
+                    Kind="Monitor" 
+                    Width="120" 
+                    Height="120" 
+                    Opacity="0.3"
+                    Margin="0,0,0,20"/>
+                <TextBlock 
+                    Text="Welcome to Professional Remote Desktop" 
+                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,10"/>
+                <TextBlock 
+                    Text="Start by creating a new connection or selecting a recent one from the side panel" 
+                    Style="{StaticResource MaterialDesignBody2TextBlock}"
+                    HorizontalAlignment="Center"
+                    Opacity="0.7"
+                    Margin="0,0,0,30"/>
+                <Button 
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="4"
+                    Command="{Binding NewConnectionCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Plus" Width="16" Height="16" Margin="0,0,5,0"/>
+                        <TextBlock Text="Create New Connection"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
