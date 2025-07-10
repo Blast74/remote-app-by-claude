@@ -1,0 +1,6 @@
+/project/sandbox/user-workspace/RemoteDesktopServer/obj/Release/net8.0/RemoteDesktopServer.csproj.AssemblyReference.cache
+/project/sandbox/user-workspace/RemoteDesktopServer/obj/Release/net8.0/RemoteDesktopServer.GeneratedMSBuildEditorConfig.editorconfig
+/project/sandbox/user-workspace/RemoteDesktopServer/obj/Release/net8.0/RemoteDesktopServer.AssemblyInfoInputs.cache
+/project/sandbox/user-workspace/RemoteDesktopServer/obj/Release/net8.0/RemoteDesktopServer.AssemblyInfo.cs
+/project/sandbox/user-workspace/RemoteDesktopServer/obj/Release/net8.0/RemoteDesktopServer.csproj.CoreCompileInputs.cache
+/project/sandbox/user-workspace/RemoteDesktopServer/obj/Release/net8.0/RemoteDesktopServer.sourcelink.json
