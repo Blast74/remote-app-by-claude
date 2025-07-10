@@ -1,0 +1,82 @@
+{
+  "ServerSettings": {
+    "ServerName": "RDP-SERVER-01",
+    "ListenPort": 3389,
+    "MaxConcurrentSessions": 50,
+    "SessionTimeoutMinutes": 480,
+    "MaxIdleTimeMinutes": 30,
+    "EnableSessionRecording": false,
+    "RecordingPath": "recordings",
+    "TempPath": "temp",
+    "LogsPath": "logs"
+  },
+  "SecuritySettings": {
+    "EncryptionLevel": "High",
+    "EncryptionKey": "DefaultKey123456789012345678901234",
+    "RequireNLA": true,
+    "AllowedAuthMethods": ["NTLM", "Kerberos", "Certificate"],
+    "CertificateThumbprint": "",
+    "RequireSecureRPC": true,
+    "EnableAuditLogging": true,
+    "FailedLoginAttempts": 3,
+    "LockoutDurationMinutes": 15,
+    "PasswordComplexity": true,
+    "SessionEncryption": "AES256"
+  },
+  "ActiveDirectorySettings": {
+    "Domain": "",
+    "LdapPath": "",
+    "UseSSL": true,
+    "AuthenticationTimeout": 30
+  },
+  "PerformanceSettings": {
+    "MonitoringInterval": 5000,
+    "PerformanceCountersEnabled": true,
+    "MaxCpuUsage": 85.0,
+    "MaxMemoryUsage": 90.0,
+    "MaxDiskUsage": 95.0,
+    "AlertThresholds": {
+      "CpuCritical": 95.0,
+      "MemoryCritical": 95.0,
+      "DiskCritical": 98.0
+    }
+  },
+  "RemoteAppSettings": {
+    "Enabled": true,
+    "ApplicationsPath": "applications",
+    "IconsPath": "icons",
+    "MaxApplications": 100,
+    "ApplicationTimeout": 300
+  },
+  "LoadBalancingSettings": {
+    "Enabled": false,
+    "ServerFarm": [],
+    "LoadBalanceMethod": "RoundRobin",
+    "HealthCheckInterval": 30
+  },
+  "ApiSettings": {
+    "Enabled": true,
+    "Port": 8443,
+    "UseHttps": true,
+    "JwtSecret": "RemoteDesktopServer2024SuperSecretKey!@#$%^&*",
+    "JwtExpirationHours": 24,
+    "RateLimiting": {
+      "RequestsPerMinute": 100,
+      "BurstSize": 10
+    }
+  },
+  "ClusteringSettings": {
+    "Enabled": false,
+    "NodeId": "NODE-01",
+    "ClusterNodes": [],
+    "HeartbeatInterval": 10,
+    "ElectionTimeout": 5000
+  },
+  "BackupSettings": {
+    "Enabled": true,
+    "BackupPath": "backups",
+    "RetentionDays": 30,
+    "BackupInterval": "Daily",
+    "BackupTime": "02:00:00"
+  }
+}
