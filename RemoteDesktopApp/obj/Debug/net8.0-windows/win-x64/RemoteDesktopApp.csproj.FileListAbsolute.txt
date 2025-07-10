@@ -1,0 +1,17 @@
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/RemoteDesktopApp.csproj.AssemblyReference.cache
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/Views/HeaderBar.baml
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/Views/SettingsPanel.baml
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/Views/TabContainer.baml
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/App.baml
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/MainWindow.g.cs
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/Views/HeaderBar.g.cs
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/Views/SettingsPanel.g.cs
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/Views/TabContainer.g.cs
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/App.g.cs
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/GeneratedInternalTypeHelper.g.cs
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/RemoteDesktopApp_MarkupCompile.cache
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/RemoteDesktopApp_MarkupCompile.lref
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/Views/StatusBar.baml
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/Views/StatusBar.g.cs
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/Views/SidePanel.baml
+/project/sandbox/user-workspace/RemoteDesktopApp/obj/Debug/net8.0-windows/win-x64/Views/SidePanel.g.cs
